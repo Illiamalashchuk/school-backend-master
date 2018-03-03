@@ -17,11 +17,28 @@ MongoClient.connect(url, function(err, db) {
         db.close();
         return console.log(err);
       }
+      console.log('collection inserted');
       // Success
       db.close();
     }
   )
 });
+
+
+
+MongoClient.connect(url, function(err, db) {
+  if (err) throw err;
+  
+  db.collection('notes').findOne({}, function(err, result) {
+    if (err) throw err;
+    console.log(result);
+    db.close();
+  });
+  
+});
+
+
+
 
 
 // MongoClient.connect(url, function(err, db) {
