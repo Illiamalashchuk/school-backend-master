@@ -52,7 +52,7 @@ export default class TestCtrl extends BaseCtrl {
         ctx.ok(items);
     }
 
-    @del('/:_id/del-tl-prop') // delete track from Tracklist
+    @del('/:_id/del-one-from-list') // delete track from Tracklist
     async deleteTrackFromTracklist(ctx) {
         let items = await Tracklist.findOneAndUpdate({_id: ctx.params._id}, { $pull: ctx.request.body }); // there you have to put (TracklistList: 'property which you want to delete')
         ctx.ok(items);

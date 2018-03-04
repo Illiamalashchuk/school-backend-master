@@ -29,7 +29,11 @@ export default class TestCtrl extends BaseCtrl {
     @get('/:_id') // get one object(image) by it`s id
     async getImageById(ctx) {
         try {
-            let items = await Image.findOne({_id: ctx.params._id});
+            let items = await Image.findOne(
+                {
+                    _id: ctx.params._id
+                }
+            );
 
             ctx.ok(items);            
         } catch (err) {
@@ -39,7 +43,14 @@ export default class TestCtrl extends BaseCtrl {
 
     @put('/:_id') // update some properties of image
     async updateImage(ctx) {
-        let items = await Image.findOneAndUpdate({_id: ctx.params._id}, {$push: ctx.request.body}); 
+        let items = await Image.findOneAndUpdate(
+            {
+                _id: ctx.params._id
+            }, 
+            {
+                $push: ctx.request.body
+            }
+        ); 
 
         await items.save();
         ctx.ok(items);
@@ -47,25 +58,28 @@ export default class TestCtrl extends BaseCtrl {
     
     @del('/:_id') // delete one object(image) from collection of images
     async deleteImage(ctx) {
-        let items = await Image.findOneAndRemove({_id: ctx.params._id}, ctx.request.body);
+        let items = await Image.findOneAndRemove(
+            {
+                _id: ctx.params._id
+            }, 
+            ctx.request.body
+        );
 
         ctx.ok(items);
     }
 
-    @del('/:_id/del-tag') // delete imageTag from image object
-    async deleteTag(ctx) {
-        let items = await Image.findOneAndUpdate({_id: ctx.params._id}, { $pull: ctx.request.body }); // there you have to put (imageTag: 'property which you want to delete')
+    @del('/:_id/del-image-prop') // delete some from image object
+    async deleteImageProp(ctx) {
+        let items = await Image.findOneAndUpdate(
+            {
+                _id: ctx.params._id
+            },
+            {
+                $pull: ctx.request.body
+            }
+        ); // there you have to put ('some image property': 'property which you want to delete')
+        
         ctx.ok(items);
     }
 
-    @del('/:_id/del-description') // delete description from image object
-    async deleteDescription(ctx) {
-        let items = await Image.findOneAndUpdate({_id: ctx.params._id}, {$pop: ctx.request.body}); // there you have to put (image Description: 'empty field')
-        ctx.ok(items);
-    }
-    @del('/:_id/del-img-fr-album') // delete description from image object
-    async deleteImageFromAlbum(ctx) {
-        let items = await Image.findOneAndUpdate({_id: ctx.params._id}, {$pull: ctx.request.body}); // there you have to put (image Description: 'empty field')
-        ctx.ok(items);
-    }
 }

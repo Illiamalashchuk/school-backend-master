@@ -29,7 +29,11 @@ export default class TestCtrl extends BaseCtrl {
     @get('/:_id') // get one object(album) by it`s id
     async getAlbumById(ctx) {
         try {
-            let items = await Album.findOne({_id: ctx.params._id});
+            let items = await Album.findOne(
+                {
+                    _id: ctx.params._id
+                }
+            );
 
             ctx.ok(items);            
         } catch (err) {
@@ -39,7 +43,14 @@ export default class TestCtrl extends BaseCtrl {
 
     @put('/:_id') // update some properties of album
     async updateAlbum(ctx) {
-        let items = await Album.findOneAndUpdate({_id: ctx.params._id}, {$push: ctx.request.body}); // here you can change the name of some album or insert new image in 'albumlist'
+        let items = await Album.findOneAndUpdate(
+            {
+                _id: ctx.params._id
+            },
+            {
+                $push: ctx.request.body
+            }
+        ); // here you can change the name of some album or insert new image in 'albumlist'
 
         await items.save();
         ctx.ok(items);
@@ -47,14 +58,27 @@ export default class TestCtrl extends BaseCtrl {
     
     @del('/:_id') // delete one object(album) from collection of albums
     async deleteAlbum(ctx) {
-        let items = await Album.findOneAndRemove({_id: ctx.params._id}, ctx.request.body);
+        let items = await Album.findOneAndRemove(
+            {
+                _id: ctx.params._id
+            }, 
+            ctx.request.body
+        );
 
         ctx.ok(items);
     }
 
-    @del('/:_id/del-image-prop') // delete image from album
+    @del('/:_id/del-one-from-album') // delete image from album
     async deleteImageFromAlbum(ctx) {
-        let items = await Album.findOneAndUpdate({_id: ctx.params._id}, { $pull: ctx.request.body }); // there you have to put (albumList: 'property which you want to delete')
+        let items = await Album.findOneAndUpdate(
+            {
+                _id: ctx.params._id
+            }, 
+            {
+                $pull: ctx.request.body
+            }
+        ); // there you have to put (albumList: 'property which you want to delete')
+        
         ctx.ok(items);
     }
 }

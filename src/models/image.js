@@ -3,12 +3,20 @@ import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
 const schema = new Schema({
-  userName: {type: String, required: true},
-  imageLink: {type: String, required: true},
-  imageDate: {type: String, required: true},
-  imageDescription: {type: String},
-  imageTag: {type: String},
-  imageAlbum: {type: String}
+  user: {
+    type: mongoose.Schema.Types.ObjectId, 
+    ref: 'User'
+  },
+  link: {
+    type: Buffer,
+    required: true
+  },
+  description: String,
+  tag: String,
+  created: {
+    type: Date,
+    default: Date.now
+  }
 });
 
 export default mongoose.model('image', schema);

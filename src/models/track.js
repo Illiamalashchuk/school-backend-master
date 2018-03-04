@@ -3,11 +3,28 @@ import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
 const schema = new Schema({
-  userName: {type: String, required: true},
-  trackName: {type: String, required: true},
-  trackLink: {type: String, required: true},
-  trackDate: {type: String, required: true},
-  trackList: {type: String} 
+  user: {
+    type: mongoose.Schema.Types.ObjectId, 
+    ref: 'User'
+  },
+  name: {
+    artist: {
+      type: String,
+      default: 'New artist'
+    },
+    composition: {
+      type: String,
+      default: 'New composition'
+    }
+  },
+  link: {
+    type: Buffer,
+    required: true
+  },
+  created: {
+    type: Date,
+    default: Date.now
+  }
 });
 
 export default mongoose.model('track', schema);
