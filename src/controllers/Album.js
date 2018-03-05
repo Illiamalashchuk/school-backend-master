@@ -17,6 +17,8 @@ export default class TestCtrl extends BaseCtrl {
         }
     }
 
+    // get by user id 
+
     @post('') // post one new album
     async createAlbum(ctx) {
         // empty
@@ -41,14 +43,14 @@ export default class TestCtrl extends BaseCtrl {
         }
     }
 
-    @put('/:_id') // update some properties of album
+    @put('/:_id/insert-image/') // update some properties of album // протестити додавання в альбом картинок
     async updateAlbum(ctx) {
         let items = await Album.findOneAndUpdate(
             {
                 _id: ctx.params._id
             },
             {
-                $push: ctx.request.body
+                $set: ctx.request.body
             }
         ); // here you can change the name of some album or insert new image in 'albumlist'
 
@@ -56,6 +58,24 @@ export default class TestCtrl extends BaseCtrl {
         ctx.ok(items);
     }
     
+    @put('/:_id') // update some properties of album
+    async updateAlbum(ctx) {
+        let items = await Album.findOneAndUpdate(
+            {
+                _id: ctx.params._id
+            },
+            {
+                $set: ctx.request.body
+            }
+        ); // here you can change the name of some album or insert new image in 'albumlist'
+
+        await items.save();
+        ctx.ok(items);
+    }
+
+
+
+
     @del('/:_id') // delete one object(album) from collection of albums
     async deleteAlbum(ctx) {
         let items = await Album.findOneAndRemove(
