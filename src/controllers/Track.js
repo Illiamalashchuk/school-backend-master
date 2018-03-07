@@ -7,10 +7,10 @@ import BaseCtrl from './Base';
 export default class TestCtrl extends BaseCtrl {
     
 
-    @get('') // get all tracks - array of tracks
-    async getListOfTracks(ctx) {
+    @get('') // get tracks by user`s _id. As result you`ll get array of tracks
+    async getTracksByUserId(ctx) {
         try {
-            const items = await Track.find();
+            const items = await Track.find(ctx.request.body);
 
             ctx.ok(items);
         } catch (err) {
@@ -29,7 +29,11 @@ export default class TestCtrl extends BaseCtrl {
     @get('/:_id') // get one object(track) by it`s id
     async getTrackById(ctx) {
         try {
-            let items = await Track.findOne({_id: ctx.params._id});
+            let items = await Track.findOne(
+                {
+                    _id: ctx.params._id
+                }
+            );
 
             ctx.ok(items);            
         } catch (err) {
@@ -39,7 +43,14 @@ export default class TestCtrl extends BaseCtrl {
 
     @put('/:_id') // update some properties of track
     async updateTrack(ctx) {
-        let items = await Track.findOneAndUpdate({_id: ctx.params._id}, {$push: ctx.request.body}); 
+        let items = await Track.findOneAndUpdate(
+            {
+                _id: ctx.params._id
+            },
+            {
+                $push: ctx.request.body
+            }
+        ); 
 
         await items.save();
         ctx.ok(items);
@@ -47,14 +58,26 @@ export default class TestCtrl extends BaseCtrl {
     
     @del('/:_id') // delete one object(track) from collection of tracks
     async deleteTrack(ctx) {
-        let items = await Track.findOneAndRemove({_id: ctx.params._id}, ctx.request.body);
+        let items = await Track.findOneAndRemove(
+            {
+                _id: ctx.params._id
+            },
+            ctx.request.body
+        );
 
         ctx.ok(items);
     }
 
     @del('/:_id/del-track-prop') // delete track from Tracklist
     async deleteTrackProp(ctx) {
-        let items = await Track.findOneAndUpdate({_id: ctx.params._id}, { $pull: ctx.request.body }); // there you have to put (trackList: 'property which you want to delete')
+        let items = await Track.findOneAndUpdate(
+            {
+                _id: ctx.params._id
+            }, 
+            {
+                $pull: ctx.request.body
+            }
+        ); // there you have to put (trackList: 'property which you want to delete')
         ctx.ok(items);
     }
 }

@@ -7,10 +7,10 @@ import BaseCtrl from './Base';
 export default class TestCtrl extends BaseCtrl {
     
 
-    @get('') // get all Tracklists
-    async getListOfTracklists(ctx) {
+    @get('') // get tracklists by user`s _id. As result you`ll get array of tracklists
+    async getTracklistsByUserId(ctx) {
         try {
-            const items = await Tracklist.find();
+            const items = await Tracklist.find(ctx.request.body);
             ctx.ok(items);
         } catch (err) {
             ctx.throw(HttpStatus.BAD_REQUEST, err.message);
@@ -29,7 +29,11 @@ export default class TestCtrl extends BaseCtrl {
     @get('/:_id') // get one object(tracklist) by it`s id
     async getTracklistById(ctx) {
         try {
-            let items = await Tracklist.findOne({_id: ctx.params._id});
+            let items = await Tracklist.findOne(
+                {
+                    _id: ctx.params._id
+                }
+            );
 
             ctx.ok(items);            
         } catch (err) {
@@ -39,7 +43,14 @@ export default class TestCtrl extends BaseCtrl {
 
     @put('/:_id') // update some properties of tracklist
     async updateTracklist(ctx) {
-        let items = await Tracklist.findOneAndUpdate({_id: ctx.params._id}, {$push: ctx.request.body}); // here you can change the name of some tracklist or insert new track in 'Tracklistlist'
+        let items = await Tracklist.findOneAndUpdate(
+            {
+                _id: ctx.params._id
+            },
+            {
+                $push: ctx.request.body
+            }
+        ); // here you can change the name of some tracklist or insert new track in 'Tracklistlist'
 
         items.save();
         ctx.ok(items);
@@ -47,14 +58,26 @@ export default class TestCtrl extends BaseCtrl {
     
     @del('/:_id') // delete one object(Tracklist) from collection of Tracklists
     async deleteTracklist(ctx) {
-        let items = await Tracklist.findOneAndRemove({_id: ctx.params._id}, ctx.request.body);
+        let items = await Tracklist.findOneAndRemove(
+            {
+                _id: ctx.params._id
+            }, 
+            ctx.request.body
+        );
 
         ctx.ok(items);
     }
 
     @del('/:_id/del-one-from-list') // delete track from Tracklist
     async deleteTrackFromTracklist(ctx) {
-        let items = await Tracklist.findOneAndUpdate({_id: ctx.params._id}, { $pull: ctx.request.body }); // there you have to put (TracklistList: 'property which you want to delete')
+        let items = await Tracklist.findOneAndUpdate(
+            {
+                _id: ctx.params._id
+            },
+            {
+                $pull: ctx.request.body
+            }
+        ); // there you have to put (TracklistList: 'property which you want to delete')
         ctx.ok(items);
     }
 }

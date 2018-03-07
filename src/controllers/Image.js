@@ -7,10 +7,10 @@ import BaseCtrl from './Base';
 export default class TestCtrl extends BaseCtrl {
     
 
-    @get('') // get all images - array of images
-    async getListOfImages(ctx) {
+    @get('') // get all images by user`s _id. As result you`ll get array of images
+    async getImagesByUserId(ctx) {
         try {
-            const items = await Image.find();
+            const items = await Image.find(ctx.request.body);
 
             ctx.ok(items);
         } catch (err) {
@@ -19,11 +19,11 @@ export default class TestCtrl extends BaseCtrl {
     }
 
     @post('') // post new image to collection of users
-    async createImage(ctx) {
+    async insertImageToCollection(ctx) {
         const itm = new Image(ctx.request.body);
         await itm.save();
 
-        ctx.ok(itm);
+        ctx.ok({_id: itm._id});
     }
 
     @get('/:_id') // get one object(image) by it`s id

@@ -7,17 +7,15 @@ import BaseCtrl from './Base';
 export default class TestCtrl extends BaseCtrl {
     
 
-    @get('') // get all albums
-    async getListOfAlbums(ctx) {
+    @get('') // get albums by user`s _id. As result you`ll get array of albums
+    async getAlbumsByUserId(ctx) {
         try {
-            const items = await Album.find();
+            const items = await Album.find(ctx.request.body);
             ctx.ok(items);
         } catch (err) {
             ctx.throw(HttpStatus.BAD_REQUEST, err.message);
         }
     }
-
-    // get by user id 
 
     @post('') // post one new album
     async createAlbum(ctx) {
@@ -28,7 +26,7 @@ export default class TestCtrl extends BaseCtrl {
         ctx.ok(itm);
     }
 
-    @get('/:_id') // get one object(album) by it`s id
+    @get('/:_id') // get one album by it`s id
     async getAlbumById(ctx) {
         try {
             let items = await Album.findOne(
@@ -37,25 +35,10 @@ export default class TestCtrl extends BaseCtrl {
                 }
             );
 
-            ctx.ok(items);            
+            ctx.ok({_id: items._id});            
         } catch (err) {
             ctx.throw(HttpStatus.BAD_REQUEST, err.message);
         }
-    }
-
-    @put('/:_id/insert-image/') // update some properties of album // протестити додавання в альбом картинок
-    async updateAlbum(ctx) {
-        let items = await Album.findOneAndUpdate(
-            {
-                _id: ctx.params._id
-            },
-            {
-                $set: ctx.request.body
-            }
-        ); // here you can change the name of some album or insert new image in 'albumlist'
-
-        await items.save();
-        ctx.ok(items);
     }
     
     @put('/:_id') // update some properties of album
@@ -65,16 +48,13 @@ export default class TestCtrl extends BaseCtrl {
                 _id: ctx.params._id
             },
             {
-                $set: ctx.request.body
+                $push: ctx.request.body
             }
-        ); // here you can change the name of some album or insert new image in 'albumlist'
+        ); 
 
         await items.save();
         ctx.ok(items);
     }
-
-
-
 
     @del('/:_id') // delete one object(album) from collection of albums
     async deleteAlbum(ctx) {
