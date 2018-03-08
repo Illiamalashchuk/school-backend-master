@@ -2,7 +2,7 @@ import Image from '../models/image';
 import HttpStatus from 'http-status-codes';
 import { controller, get, post, put, del } from 'koa-dec-router';
 import BaseCtrl from './Base';
-
+import fileUploader from '../middleware/new';
 
 @controller('/image') 
 export default class TestCtrl extends BaseCtrl {
@@ -18,8 +18,10 @@ export default class TestCtrl extends BaseCtrl {
         }
     }
 
-    @post('') // post new image to collection of users
+    @post('', fileUploader) // post new image to collection of users
     async insertImageToCollection(ctx) {
+        // const file = ctx.files;
+        console.log(ctx.files);
         const itm = new Image(ctx.request.body);
         await itm.save();
 

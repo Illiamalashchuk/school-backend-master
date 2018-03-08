@@ -9,7 +9,7 @@ const schema = new Schema({
   },
   link: {
     type: Buffer,
-    required: true
+    
   },
   description: String,
   tag: String,
