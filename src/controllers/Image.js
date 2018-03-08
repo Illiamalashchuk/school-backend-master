@@ -3,9 +3,9 @@ import HttpStatus from 'http-status-codes';
 import { controller, get, post, put, del } from 'koa-dec-router';
 import BaseCtrl from './Base';
 
+
 @controller('/image') 
 export default class TestCtrl extends BaseCtrl {
-    
 
     @get('') // get all images by user`s _id. As result you`ll get array of images
     async getImagesByUserId(ctx) {
