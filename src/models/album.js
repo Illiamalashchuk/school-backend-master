@@ -12,12 +12,6 @@ const schema = new Schema({
     default: 'New album'
   },
   description: String,
-  images: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Image'
-    }
-  ],
   created: {
     type: Date,
     default: Date.now

@@ -7,9 +7,13 @@ const schema = new Schema({
     type: mongoose.Schema.Types.ObjectId, 
     ref: 'User'
   },
-  link: {
-    type: Buffer,
-    
+  img: {
+    type: mongoose.Schema.Types.ObjectId, 
+    ref: 'User'
+  },
+  album: {
+    type: mongoose.Schema.Types.ObjectId, 
+    ref: 'User'
   },
   description: String,
   tag: String,

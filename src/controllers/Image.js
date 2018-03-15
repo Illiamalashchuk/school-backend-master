@@ -2,7 +2,7 @@ import Image from '../models/image';
 import HttpStatus from 'http-status-codes';
 import { controller, get, post, put, del } from 'koa-dec-router';
 import BaseCtrl from './Base';
-import fileUploader from '../middleware/new';
+import { fileUploader } from '../middleware/new';
 
 @controller('/image') 
 export default class TestCtrl extends BaseCtrl {
@@ -11,7 +11,6 @@ export default class TestCtrl extends BaseCtrl {
     async getImagesByUserId(ctx) {
         try {
             const items = await Image.find(ctx.request.body);
-
             ctx.ok(items);
         } catch (err) {
             ctx.throw(HttpStatus.BAD_REQUEST, err.message);
@@ -20,9 +19,9 @@ export default class TestCtrl extends BaseCtrl {
 
     @post('', fileUploader) // post new image to collection of users
     async insertImageToCollection(ctx) {
-        // const file = ctx.files;
-        console.log(ctx.files);
         const itm = new Image(ctx.request.body);
+        let imgId = ctx.files[0]._id;
+        itm.img = imgId;
         await itm.save();
 
         ctx.ok({_id: itm._id});
@@ -33,7 +32,7 @@ export default class TestCtrl extends BaseCtrl {
         try {
             let items = await Image.findOne(
                 {
-                    _id: ctx.params._id
+                    _id: ctx.params._id,
                 }
             );
 

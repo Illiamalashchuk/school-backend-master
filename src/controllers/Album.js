@@ -21,6 +21,7 @@ export default class TestCtrl extends BaseCtrl {
     async createAlbum(ctx) {
         // empty
         const itm = new Album(ctx.request.body);
+        console.log(itm);
         await itm.save();
 
         ctx.ok(itm);

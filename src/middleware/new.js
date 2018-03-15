@@ -15,6 +15,7 @@ export async function fileUploader(ctx, next) {
    }
  }
  ctx.files = files;
+ 
  next();
 }
 
