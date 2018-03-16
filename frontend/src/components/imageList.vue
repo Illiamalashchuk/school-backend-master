@@ -1,11 +1,11 @@
 <template>
 <div id="images-list">
     <ul id="list">
-        <li v-for="post in this.posts">  
+        <li v-for="image in this.images">  
             
             <!-- <div class="img-card" @click={(ev) => this.openCarousel(post.id)} > -->
             <div class="img-card" @click="openCarousel">
-                <div>{{ post.img }}</div>
+                <div>{{ image }}</div>
                 <!-- <div class="time">{{ post.created }}</div> -->
             </div>
  
@@ -13,9 +13,9 @@
     </ul>
     <el-dialog :visible.sync="dialogVisible">
         
-        <el-carousel :interval="4000" type="card" height="200px">
-            <el-carousel-item initial-index=2  v-for="post in this.posts">
-                <h3>{{ post.img }}</h3>
+        <el-carousel  initial-index=2 type="card" autoplay="false" height="200px">
+            <el-carousel-item   v-for="image in this.images">
+                <!-- <h3>{{ post.img }}</h3> -->
             </el-carousel-item>
         </el-carousel>
 
@@ -75,21 +75,34 @@ export default {
         return {
             posts: [],
             errors: [],
+            images: [],
             dialogImageUrl: '',
             dialogVisible: false
         }
     },
-    created() {
-        axios.get(`/image`)
-        .then(response => {
-            // JSON responses are automatically parsed.
-            this.posts = response.data
-            console.log(this.posts);
-        })
-        .catch(e => {
-            this.errors.push(e)
-        })
+    // created() {
+    //     axios.get(`/image`)
+    //     .then(response => {
+    //         // JSON responses are automatically parsed.
+    //         this.posts = response.data
+    //         console.log(this.posts);
+    //     })
+    //     .catch(e => {
+    //         this.errors.push(e)
+    //     })
+    // },
+    
+    async created() {
+        try {
+          const response = await axios.get(`/files/5aa6de7742880021c4d19232`)
+          let test = response.data
+          console.log(test);
+        } catch (e) {
+          this.errors.push(e)
+        }
+
     },
+  
     methods: {
         handleRemove(file, fileList) {
             console.log(file, fileList);
