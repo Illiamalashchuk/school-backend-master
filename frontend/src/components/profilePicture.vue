@@ -1,74 +1,62 @@
 <template>
-<div id="picture">
-<el-upload
-  class="avatar-uploader"
-  action="https://jsonplaceholder.typicode.com/posts/"
-  :show-file-list="false"
-  :on-success="handleAvatarSuccess"
-  :before-upload="beforeAvatarUpload">
-  <img v-if="imageUrl" :src="imageUrl" class="avatar">
-  <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-</el-upload>
-</div>
+  <div id="picture">
+      <img v-if="this.posts[0]" :src="`http://localhost:5000/api/files/${this.posts[0].img}`" width="90%">
+      <div v-else class="image">Click on "Add avatar" to upload your profile picture</div>
+    
+    <el-upload class="upload-demo" :action="`http://localhost:5000/api/avatar/${this.user}`">
+      <el-button size="small" type="primary">Add avatar</el-button>
+    </el-upload>
 
+    <el-button type="danger" @click="deleteAvatar">Delete avatar</el-button>
+  </div>
 </template>
 
 <style>
+
 #picture {
     width: 100%;
     text-align: center;
 }
-  .avatar-uploader .el-upload {
-    border: 1px dashed #d9d9d9;
-    border-radius: 6px;
-    cursor: pointer;
-    position: relative;
+.avatar {
+    width: 80%;
+    height: 150px;
     overflow: hidden;
-    
-  }
-  .avatar-uploader .el-upload:hover {
-    border-color: #409EFF;
-  }
-  .avatar-uploader-icon {
-    font-size: 28px;
-    color: #8c939d;
-    width: 178px;
-    height: 178px;
-    line-height: 178px;
     text-align: center;
+    border: 1px solid black;
+    cursor: pointer;
+}
 
-  }
-  .avatar {
-    width: 178px;
-    height: 178px;
-    display: block;
-    margin: auto;
-  }
 </style>
 
 <script>
+import axios from '../my-axios';
+
   export default {
     data() {
       return {
-        imageUrl: ''
+        posts: [],
+        errors: [],
+        user: '5aaee2644a6bae284c5bf3eb'
       };
     },
-    methods: {
-      handleAvatarSuccess(res, file) {
-        this.imageUrl = URL.createObjectURL(file.raw);
-      },
-      beforeAvatarUpload(file) {
-        const isJPG = file.type === 'image/jpeg';
-        const isLt2M = file.size / 1024 / 1024 < 2;
-
-        if (!isJPG) {
-          this.$message.error('Avatar picture must be JPG format!');
-        }
-        if (!isLt2M) {
-          this.$message.error('Avatar picture size can not exceed 2MB!');
-        }
-        return isJPG && isLt2M;
+    async created() {
+      try {
+        const response = await axios.get(`/avatar/${this.user}`)
+        this.posts = response.data
+      } catch (e) {
+        this.errors.push(e)
       }
+    },
+    
+    methods: {
+      async deleteAvatar() {
+        try {
+          console.log('deleted')
+          const response = await axios.delete(`/avatar/${this.posts[0]._id}`)
+        } catch (e) {
+          this.errors.push(e)
+        }
+      } 
     }
   }
 </script>
