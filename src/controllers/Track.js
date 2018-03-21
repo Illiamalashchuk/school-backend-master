@@ -2,6 +2,7 @@ import Track from '../models/track';
 import HttpStatus from 'http-status-codes';
 import { controller, get, post, put, del } from 'koa-dec-router';
 import BaseCtrl from './Base';
+import { fileUploader } from '../middleware/new';
 
 @controller('/track') 
 export default class TestCtrl extends BaseCtrl {
@@ -18,9 +19,11 @@ export default class TestCtrl extends BaseCtrl {
         }
     }
 
-    @post('') // post new track to collection of tracks
+    @post('', fileUploader) // post new track to collection of tracks
     async createTrack(ctx) {
         const itm = new Track(ctx.request.body);
+        let trackId = ctx.files[0]._id;
+        itm.track = trackId;
         await itm.save();
 
         ctx.ok(itm);

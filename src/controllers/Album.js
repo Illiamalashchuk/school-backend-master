@@ -7,40 +7,40 @@ import BaseCtrl from './Base';
 export default class TestCtrl extends BaseCtrl {
     
 
-    @get('') // get albums by user`s _id. As result you`ll get array of albums
+    @get('/:_id') // get albums by user`s _id. As result you`ll get array of albums
     async getAlbumsByUserId(ctx) {
         try {
-            const items = await Album.find(ctx.request.body);
+            const items = await Album.find({user: ctx.params._id});
             ctx.ok(items);
         } catch (err) {
             ctx.throw(HttpStatus.BAD_REQUEST, err.message);
         }
     }
 
-    @post('') // post one new album
+    @post('/:_id') // post one new album
     async createAlbum(ctx) {
         // empty
-        const itm = new Album(ctx.request.body);
-        console.log(itm);
-        await itm.save();
+        const items = new Album(ctx.request.body);
+        items.user = ctx.params._id;
+        await items.save();
 
-        ctx.ok(itm);
+        ctx.ok(items);
     }
 
-    @get('/:_id') // get one album by it`s id
-    async getAlbumById(ctx) {
-        try {
-            let items = await Album.findOne(
-                {
-                    _id: ctx.params._id
-                }
-            );
+    // @get('/:_id') // get one album by it`s id
+    // async getAlbumById(ctx) {
+    //     try {
+    //         let items = await Album.findOne(
+    //             {
+    //                 _id: ctx.params._id
+    //             }
+    //         );
 
-            ctx.ok({_id: items._id});            
-        } catch (err) {
-            ctx.throw(HttpStatus.BAD_REQUEST, err.message);
-        }
-    }
+    //         ctx.ok({_id: items._id});            
+    //     } catch (err) {
+    //         ctx.throw(HttpStatus.BAD_REQUEST, err.message);
+    //     }
+    // }
     
     @put('/:_id') // update some properties of album
     async updateAlbum(ctx) {

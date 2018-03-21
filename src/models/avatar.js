@@ -5,11 +5,13 @@ const Schema = mongoose.Schema;
 const schema = new Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId, 
-    ref: 'User'
+    ref: 'User',
+    required: true
   },
-  name: {
-    type: String,
-    default: 'New tracklist'
+  img: {
+    type: mongoose.Schema.Types.ObjectId, 
+    ref: 'Image',
+    required: true
   },
   created: {
     type: Date,
@@ -17,4 +19,4 @@ const schema = new Schema({
   }
 });
 
-export default mongoose.model('tracklist', schema);
+export default mongoose.model('avatar', schema);

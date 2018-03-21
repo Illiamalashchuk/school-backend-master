@@ -7,19 +7,17 @@ const schema = new Schema({
     type: mongoose.Schema.Types.ObjectId, 
     ref: 'User'
   },
-  name: {
-    artist: {
-      type: String,
-      default: 'New artist'
-    },
-    composition: {
-      type: String,
-      default: 'New composition'
-    }
+  artist: {
+    type: String,
+    default: 'New artist'
   },
-  link: {
-    type: Buffer,
-    required: true
+  composition: {
+    type: String,
+    default: 'New composition'
+  },
+  track: {
+    type: mongoose.Schema.Types.ObjectId, 
+    ref: 'Track'
   },
   created: {
     type: Date,

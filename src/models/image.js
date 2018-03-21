@@ -5,11 +5,13 @@ const Schema = mongoose.Schema;
 const schema = new Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId, 
-    ref: 'User'
+    ref: 'User',
+    required: true
   },
   img: {
     type: mongoose.Schema.Types.ObjectId, 
-    ref: 'User'
+    ref: 'User',
+    required: true
   },
   album: {
     type: mongoose.Schema.Types.ObjectId, 

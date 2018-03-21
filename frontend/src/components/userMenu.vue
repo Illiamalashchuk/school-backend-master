@@ -3,8 +3,6 @@
     <div>
         <profilePicture></profilePicture>
     </div>
-    <span>User`s name</span>
-
 </div>
 
 </template>
