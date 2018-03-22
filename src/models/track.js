@@ -7,13 +7,9 @@ const schema = new Schema({
     type: mongoose.Schema.Types.ObjectId, 
     ref: 'User'
   },
-  artist: {
+  name: {
     type: String,
-    default: 'New artist'
-  },
-  composition: {
-    type: String,
-    default: 'New composition'
+    default: 'New track'
   },
   track: {
     type: mongoose.Schema.Types.ObjectId, 

@@ -8,41 +8,42 @@ import { fileUploader } from '../middleware/new';
 export default class TestCtrl extends BaseCtrl {
     
 
-    @get('') // get tracks by user`s _id. As result you`ll get array of tracks
+    @get('/:_id') // get all tracks by user`s _id. As result you`ll get array of user`s tracks 
     async getTracksByUserId(ctx) {
         try {
-            const items = await Track.find(ctx.request.body);
-
+            const items = await Track.find({user: ctx.params._id});
             ctx.ok(items);
         } catch (err) {
             ctx.throw(HttpStatus.BAD_REQUEST, err.message);
         }
     }
 
-    @post('', fileUploader) // post new track to collection of tracks
+    @post('/:_id', fileUploader) // post new track to collection of tracks
     async createTrack(ctx) {
-        const itm = new Track(ctx.request.body);
+        const items = new Track(ctx.request.body);
         let trackId = ctx.files[0]._id;
-        itm.track = trackId;
-        await itm.save();
+        items.name =  ctx.files[0].filename;
+        items.track = trackId;
+        items.user = ctx.params._id;
+        await items.save();
 
-        ctx.ok(itm);
+        ctx.ok(items);
     }
 
-    @get('/:_id') // get one object(track) by it`s id
-    async getTrackById(ctx) {
-        try {
-            let items = await Track.findOne(
-                {
-                    _id: ctx.params._id
-                }
-            );
+    // @get('/:_id') // get one object(track) by it`s id
+    // async getTrackById(ctx) {
+    //     try {
+    //         let items = await Track.findOne(
+    //             {
+    //                 _id: ctx.params._id
+    //             }
+    //         );
 
-            ctx.ok(items);            
-        } catch (err) {
-            ctx.throw(HttpStatus.BAD_REQUEST, err.message);
-        }
-    }
+    //         ctx.ok(items);            
+    //     } catch (err) {
+    //         ctx.throw(HttpStatus.BAD_REQUEST, err.message);
+    //     }
+    // }
 
     @put('/:_id') // update some properties of track
     async updateTrack(ctx) {
@@ -61,13 +62,7 @@ export default class TestCtrl extends BaseCtrl {
     
     @del('/:_id') // delete one object(track) from collection of tracks
     async deleteTrack(ctx) {
-        let items = await Track.findOneAndRemove(
-            {
-                _id: ctx.params._id
-            },
-            ctx.request.body
-        );
-
+        let items = await Track.remove({_id: ctx.params._id});
         ctx.ok(items);
     }
 

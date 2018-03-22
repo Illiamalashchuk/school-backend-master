@@ -47,9 +47,6 @@ export default class TestCtrl extends BaseCtrl {
         }
     }
 
-
-
-
     @put('/:_id') // update some properties of image
     async updateImage(ctx) {
         const items = await Image.findOneAndUpdate({_id: ctx.params._id}, {$set: ctx.request.body}); 
@@ -58,21 +55,17 @@ export default class TestCtrl extends BaseCtrl {
         ctx.ok(items);
     }
     
-    @del('/:_id') // delete one object(image) from collection of images
+    @del('/:_id') // delete one image from collection of images
     async deleteImage(ctx) {
-        let items = await Image.findOneAndRemove(
-            {
-                _id: ctx.params._id
-            }, 
-            ctx.request.body
-        );
+        let items = await Image.remove({_id: ctx.params._id});
         
         ctx.ok(items);
     }
     
-    @put('/delimage/:_id') // delete image from album    ??????????????????????????????????
-    async deleteImageProp(ctx) {
-        let items = await Image.findOneAndUpdate({_id: ctx.params._id}, {$unset: {album: ctx.params._id}}); 
+
+    @put('/delimage/:_id') // delete image from album
+    async deleteImageProp(ctx) { 
+        let items = await Image.update({album: ctx.params._id}, {$unset: {album: ctx.params._id}}, {multi: true}); 
         
         ctx.ok(items);
     }

@@ -21,8 +21,9 @@ export default class TestCtrl extends BaseCtrl {
     
     console.log(sourceStream)
     let transformer = sharp().resize(320, 180) 
-    sourceStream.pipe(transformer)
-
+    
+    sourceStream = sourceStream.pipe(transformer)
+  
 
     ctx.status = HttpStatus.OK;
     ctx.body = await pipe(sourceStream, res, { end: false });

@@ -1,38 +1,39 @@
 <template>
-<div id="images-list">
+<div id="images-menu">
+    <div class="top-menu">
+        <el-upload
+            class="upload-demo"
+            ref="upload"
+            :action="`http://localhost:5000/api/image/${this.user}`"
+            :auto-upload="false">
+                <el-button slot="trigger" type="primary">Select image file</el-button>
+                <el-button type="success" @click="submitUpload">Upload</el-button>
+        </el-upload>
+        <div style="margin: 10px 0;">List of albums</div>
      <ul class="list">
-         <li>
-            <el-upload
-                :action="`http://localhost:5000/api/image/${this.user}`" 
-                list-type="picture-card"
-                :on-preview="handlePictureCardPreview"
-                :on-remove="handleRemove">
-                <i class="el-icon-plus"></i>
-            </el-upload>
-         </li>
         <li v-for="image in this.images">  
             <div class="image" @click="openImage(image)">
-                <img :src="`http://localhost:5000/api/files/${image.img}`" width="auto" height="150">
+                <img :src="`http://localhost:5000/api/files/${image.img}`"  height="100%">
             </div> 
         </li>
     </ul>
 
     <el-dialog class="dialog" :visible.sync="dialogVisible">
         <div class="big-image">
-            <img :src="`http://localhost:5000/api/files/${this.link}`"  height="500">
+            <img :src="`http://localhost:5000/api/files/${this.el.img}`"  height="400">
         </div>
+        <el-button type="danger" @click="deleteImage">Delete image</el-button>
     </el-dialog>
-
+    </div>
 </div>
 </template>
 
 <style>
-#images-list {
+#images-menu {
     width: 80%;
     height: inherit;
     background: #f8f9fa;
     border-left: 1px solid #d9d9d9;
-    border-right: 1px solid #d9d9d9;
     padding: 20px;
 }
 .list {
@@ -42,28 +43,22 @@
 li {
     padding: 5px;
 }
-.img-card {
-    width: 150px;
-    height: 150px;
-    border: 1px solid black;
-    word-wrap: break-word;
-    border-radius: 5px;
-    cursor: pointer;
-}
 .image {
     width: 150px;
-    height: 152px;
+    height: 150px;
     overflow: hidden;
     text-align: center;
-    border: 1px solid black;
+    border: 1px solid #d9d9d9;
     cursor: pointer;
+    border-radius: 5px;
 }
 .big-image {
     text-align: center;
     padding: 10px;
 }
 .dialog {
-    height: 700px;
+    height: auto;
+    text-align: center;
 }
 .image:hover {
     box-shadow: 0 0 10px rgba(0,0,0,0.5);
@@ -94,8 +89,8 @@ export default {
             errors: [],
             dialogImageUrl: '',
             dialogVisible: false,
-            user: '5aaee2644a6bae284c5bf3eb',
-            link: ''// here have to be user`s property
+            user: '5aaee2644a6bae284c5bf3eb', // here have to be user`s property
+            el: {}
         }
     },
     async created() {
@@ -107,6 +102,17 @@ export default {
       }
     },
     methods: {
+        async submitUpload() {
+        try {
+          this.$refs.upload.submit();
+        } catch (e) {
+          this.errors.push(e)
+        }
+      },
+
+
+
+      
         handleRemove(file, fileList) {
             console.log(file, fileList);
         },
@@ -117,8 +123,16 @@ export default {
         },
         openImage(el) {
             this.dialogVisible = true;
-            this.link = el.img;            
-        },    
+            this.el = el;            
+        }, 
+        async deleteImage() {
+            try {
+                const response = await axios.delete(`/image/${this.el._id}`) 
+                console.log('delete', response.data)
+            } catch (e) {
+                this.errors.push(e)
+            }
+        }   
     }
 };
 </script>

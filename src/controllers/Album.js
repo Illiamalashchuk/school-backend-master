@@ -59,12 +59,7 @@ export default class TestCtrl extends BaseCtrl {
 
     @del('/:_id') // delete one object(album) from collection of albums
     async deleteAlbum(ctx) {
-        let items = await Album.findOneAndRemove(
-            {
-                _id: ctx.params._id
-            }, 
-            ctx.request.body
-        );
+        let items = await Album.findOneAndRemove({_id: ctx.params._id});
 
         ctx.ok(items);
     }
