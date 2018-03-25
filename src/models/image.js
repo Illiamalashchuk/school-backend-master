@@ -17,8 +17,6 @@ const schema = new Schema({
     type: mongoose.Schema.Types.ObjectId, 
     ref: 'User'
   },
-  description: String,
-  tag: String,
   created: {
     type: Date,
     default: Date.now

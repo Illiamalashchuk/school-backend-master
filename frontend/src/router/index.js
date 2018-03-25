@@ -3,7 +3,6 @@ import Router from 'vue-router';
 import Images from '../views/Images';
 import Tracks from '../views/Tracks';
 import Albums from '../views/Albums';
-import Tracklists from '../views/Tracklists';
 
 Vue.use(Router);
 
@@ -25,12 +24,6 @@ export default new Router({
       path: '/tracks',
       component: Tracks
     },
-    {
-      title: 'Tracklists',
-      path: '/tracklists',
-      component: Tracklists
-    },
-
     {
       path: '/*',
       redirect: '/'

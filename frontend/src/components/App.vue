@@ -13,27 +13,27 @@
 
 </template>
 <style>
-.el-container {
-  height: 100%;
-}
-.el-header, .el-main {
-  padding: 0 150px 0 150px;
-}
-.el-main {
-  display: flex;
-  flex-wrap: wrap;
-}
+  .el-container {
+    height: 100%;
+  }
+  .el-header, .el-main {
+    padding: 0 150px 0 150px;
+  }
+  .el-main {
+    display: flex;
+    flex-wrap: wrap;
+  }
 </style>
 
 
 <script>
-import NavBar from 'components/navBar';
-import userMenu from 'components/userMenu';
+  import NavBar from 'components/navBar';
+  import userMenu from 'components/userMenu';
 
-export default {
-  components: {
-    NavBar,
-    userMenu
-  }
-};
+  export default {
+    components: {
+      NavBar,
+      userMenu
+    }
+  };
 </script>

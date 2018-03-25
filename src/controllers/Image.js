@@ -2,7 +2,7 @@ import Image from '../models/image';
 import HttpStatus from 'http-status-codes';
 import { controller, get, post, put, del } from 'koa-dec-router';
 import BaseCtrl from './Base';
-import { fileUploader } from '../middleware/new';
+import { fileUploader } from '../middleware/fileUploader';
 
 @controller('/image') 
 export default class TestCtrl extends BaseCtrl {
@@ -19,13 +19,16 @@ export default class TestCtrl extends BaseCtrl {
 
     @post('/:_id', fileUploader) // post new image
     async insertImageToCollection(ctx) {
-        const items = new Image(ctx.request.body);
-        const imageId = ctx.files[0]._id;
-        items.img = imageId;
-        items.user = ctx.params._id;
-        await items.save();
-
-        ctx.ok(items);
+        try {
+            const items = new Image(ctx.request.body);
+            items.img =  ctx.files[0]._id;
+            items.user = ctx.params._id;
+            await items.save();
+            
+            ctx.ok(items);
+        } catch (err) {
+            ctx.throw(HttpStatus.BAD_REQUEST, err.message);
+        }
     }
  
     @get('/album/:_id') // get images by albums._id. As result you get array of images
@@ -63,9 +66,16 @@ export default class TestCtrl extends BaseCtrl {
     }
     
 
-    @put('/delimage/:_id') // delete image from album
-    async deleteImageProp(ctx) { 
+    @put('/del-all-images/:_id') // delete image from album
+    async deleteManyImagesProp(ctx) { 
         let items = await Image.update({album: ctx.params._id}, {$unset: {album: ctx.params._id}}, {multi: true}); 
+        
+        ctx.ok(items);
+    }
+
+    @put('/del-one-images/:_id') // delete image from album
+    async deleteOneImageProp(ctx) { 
+        let items = await Image.update({_id: ctx.params._id}, {$unset: {album: ctx.request.body}}); 
         
         ctx.ok(items);
     }

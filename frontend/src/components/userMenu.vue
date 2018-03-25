@@ -1,15 +1,12 @@
 <template>
-<div id="main">
-    <div>
-        <profilePicture></profilePicture>
+    <div id="main">
+            <profile-picture></profile-picture>
     </div>
-</div>
-
 </template>
 
 <style>
    #main {
-       width: 20%;
+       width: 22%;
        height: inherit;
        text-align: center;
        background: #f8f9fa;
@@ -17,27 +14,15 @@
    }
 </style>
 <script>
-import profilePicture from 'components/profilePicture';
+    import profilePicture from 'components/profilePicture';
 
-export default {
-    components: {
-        profilePicture
-    },
-    data() {
-        return {
-            activeLink: null
-        };
-    },
-    events: {
-        beforeRouteEnter (to, from, next) {
-            next(vm => {
-                vm.activeLink = to.path
-            })
+    export default {
+        components: {
+            profilePicture
         },
-        beforeRouteUpdate (to, from, next) {
-            this.activeLink = to.path;
-            next()
-        },
-    }
-};
+        data() {
+            return {
+            }
+        }   
+    };
 </script>

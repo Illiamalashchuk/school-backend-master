@@ -12,7 +12,6 @@ const schema = new Schema({
     type: String,
     default: 'New album'
   },
-  description: String,
   created: {
     type: Date,
     default: Date.now
