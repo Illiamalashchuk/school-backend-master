@@ -25,7 +25,7 @@ export default new Router({
       component: Tracks
     },
     {
-      path: '/*',
+      path: '/images',
       redirect: '/images'
     }
   ]
