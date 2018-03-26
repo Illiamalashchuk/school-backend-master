@@ -1,17 +1,33 @@
 <template>
-  <div class="picture-menu">
+  <div id="picture-menu">
     <div v-if="this.avatars.length==0" class="image-block">
       <div>Click on "Add avatar" to upload your profile picture</div>
     </div>
-    <img v-else :src="`${server}/files/${this.avatars[this.avatars.length-1].img}`" width="100%">
+    <div v-else class="avatar" @click="openAvatar">
+      <img :src="`${server}/files/${this.avatars[this.avatars.length-1].img}`" width="100%">
+    </div>
     
     <!-- upload avatar -->
     <el-upload class="upload-demo" 
     :action="`${this.server}/avatar/${this.user}`"
-    :on-error="handleSuccess">
+    :on-error="handleSuccess"
+    accept="image/*">
       <el-button class="btn" type="success">Add avatar</el-button>
     </el-upload> 
     <!-- upload avatar end -->
+
+    <!-- carousel of avatars -->
+    <el-dialog class="dialog" :visible.sync="dialogAvatarVisible" width="70%">
+      <el-carousel v-if="dialogAvatarVisible" :autoplay="false" height="550px" indicator-position="none" :initial-index="this.avatars.indexOf(this.avatars[this.avatars.length-1])">
+          <el-carousel-item v-for="avatar in this.avatars" :key="avatar.id" >
+              <img :src="`${server}/files/${avatar.img}`" height="500px">
+              <!-- <div>
+                  <el-button style="margin-top: 10px" size="small" type="danger" @click="deleteAvatar(avatar)">Delete image</el-button>
+              </div> -->
+          </el-carousel-item>
+      </el-carousel>
+    </el-dialog>
+    <!-- carousel end -->
 
     <el-button class="btn" type="danger" @click="dialogVisible = true">Delete avatar</el-button>
 
@@ -28,7 +44,8 @@
 </template>
 
 <style>
-  .picture-menu {
+  #picture-menu {
+    width: 100%;
     text-align: center;
   }
   .btn {
@@ -43,6 +60,10 @@
     margin: auto;
     padding: 40px 20px 20px 20px;
   }
+  .avatar {
+    width: 100%;
+    cursor: pointer;
+  }
 </style>
 
 <script>
@@ -55,9 +76,21 @@
         user: '5aaee2644a6bae284c5bf3eb', // here have to be user`s property
         avatars: [], // array of avatars from "created"
         errors: [],
+        index: '', // index which is used in carousel for opening particular slide
         dialogVisible: false,
+        dialogAvatarVisible: false
       };
     },
+
+    // async getUserId() { // download user._id and save it in "user"
+    //   try {
+    //     const response = await axios.get(`some link`);
+    //     this.user = response.data;
+    //   } catch (e) {
+    //     this.errors.push(e)
+    //   }
+    // },
+
     async created() { // download all avatars
       try {
         const response = await axios.get(`/avatar/${this.user}`);
@@ -107,6 +140,10 @@
           type: 'success'
         });
       }, 
-    }
+      
+      openAvatar() { // open carousel of avatars which started from the last
+        this.dialogAvatarVisible = true;
+        }
+     }           
   }
 </script>

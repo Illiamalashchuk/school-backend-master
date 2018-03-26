@@ -7,7 +7,9 @@
             class="upload-demo"
             :action="`${this.server}/image/${this.user}`"
             :on-error="handleSuccess"
-            multiple
+            multiple 
+            accept="image/*"
+            method="POST"
             :limit="3">
                 <el-button type="success">Upload new image</el-button>
             </el-upload>
@@ -19,15 +21,15 @@
             <div class="list-block">
                 <div v-if="this.images==0" style="color: red; text-align: center;">There are no images</div>
                 <ul v-else class="list">
-                    <li v-for="image in this.images" :key="image._id">  
-                        <div class="image" @click="openImage(image)">
+                    <li v-for="(image, index) in this.images" :key="image.id">  
+                        <div class="image" @click="openImage(image, index)">
                             <img :src="`${server}/files/${image.img}`" width="90%">
                         </div> 
                     </li>
                 </ul>
                 <!-- carousel of images -->
                 <el-dialog class="dialog" :visible.sync="dialogVisible" width="70%">
-                    <el-carousel :autoplay="false" height="550px" indicator-position="none" :initial-index="this.index">
+                    <el-carousel v-if="dialogVisible" :autoplay="false" height="550px" indicator-position="none" :initial-index="index">
                         <el-carousel-item v-for="image in this.images" :key="image.id" >
                             <img :src="`${server}/files/${image.img}`" height="500px">
                             <div>
@@ -92,10 +94,20 @@
                 user: '5aaee2644a6bae284c5bf3eb', // here have to be user`s property
                 images: [], // here are dowloaded images from "created"
                 errors: [],
-                index: '', // index which is used in carousel for opening particular slide
+                index: 0, // index which is used in carousel for opening particular slide
                 dialogVisible: false
             }
         },
+
+        // async getUserId() { // download user._id and save it in "user"
+        //   try {
+        //     const response = await axios.get(`some link`);
+        //     this.user = response.data;
+        //   } catch (e) {
+        //     this.errors.push(e)
+        //   }
+        // },
+
         async created() { // download images by "user"
             try {
                 const response = await axios.get(`/image/${this.user}`);
@@ -121,10 +133,9 @@
                 }, 3000);
             },
 
-            openImage(image) { // open carousel of images
+            openImage(image, index) { // open carousel of images
                 this.dialogVisible = true;
-                this.index = this.images.indexOf(image);
-                console.log('index', this.images.indexOf(image));
+                this.index = index;
             }, 
 
             async deleteImage(e) { // delete one image

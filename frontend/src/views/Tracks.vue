@@ -8,6 +8,7 @@
       :action="`${this.server}/track/${this.user}`"
       :on-error="handleSuccess"
       multiple
+      accept="audio/*"
       :limit="3">
           <el-button type="success">Upload new track</el-button>
       </el-upload>
@@ -74,6 +75,15 @@ export default {
         errors: []
       };
     },
+    
+    // async getUserId() { // download user._id and save it in "user"
+    //   try {
+    //     const response = await axios.get(`some link`);
+    //     this.user = response.data;
+    //   } catch (e) {
+    //     this.errors.push(e)
+    //   }
+    // },
 
     async created() { // download all tracks by "user"
         try {

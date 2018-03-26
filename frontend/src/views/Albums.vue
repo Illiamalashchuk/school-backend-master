@@ -18,8 +18,8 @@
             <div class="list-block album-images" style="display:none"> <!-- here all images from album are shown -->
                 <div v-if="this.images==0" style="color: red; text-align: center;">There are no images in this album</div>
                 <ul v-else class="list">
-                    <li v-for="image in this.images" :key="image.id">  
-                        <div class="image" @click="openImage(image)">
+                    <li v-for="(image, index) in this.images" :key="image.id">  
+                        <div class="image" @click="openImage(image, index)">
                             <img :src="`${server}/files/${image.img}`" width="auto" height="150">
                         </div> 
                     </li>
@@ -41,6 +41,7 @@
                     :action="`${this.server}/image/${this.user}`"
                     :on-error="handleSuccess"
                     multiple
+                    accept="image/*"
                     :limit="3">
                         <el-button type="success">Upload new image</el-button>
                     </el-upload>
@@ -69,7 +70,7 @@
 
         <!-- images carousel -->
         <el-dialog class="dialog" :visible.sync="dialogVisible" width="70%">
-            <el-carousel :autoplay="false" height="550px" indicator-position="none" :initial-index="this.index">
+            <el-carousel v-if="dialogVisible" :autoplay="false" height="550px" indicator-position="none" :initial-index="index">
                 <el-carousel-item v-for="image in this.images" :key="image.id" >
                     <img :src="`${server}/files/${image.img}`" height="500px">
                     <div style="display: flex; flex-wrap: wrap; margin-left: 385px;">
@@ -161,6 +162,16 @@
                 dialogConfirmVisible: false
             }
         },
+        
+        // async getUserId() { // download user._id and save it in "user"
+        //   try {
+        //     const response = await axios.get(`some link`);
+        //     this.user = response.data;
+        //   } catch (e) {
+        //     this.errors.push(e)
+        //   }
+        // },
+
         async created() { // get albums by user
             try {
                 const response = await axios.get(`/album/${this.user}`);
@@ -243,9 +254,9 @@
                 }
             },
             
-            openImage(image) { // show carousel of images
+            openImage(image, index) { // show carousel of images
                 this.dialogVisible = true;
-                this.index = this.images.indexOf(image);
+                this.index = index;
                 //console.log('index', this.images.indexOf(image)) 
             },
             
