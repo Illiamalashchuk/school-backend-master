@@ -5,7 +5,7 @@
       <!-- el-upload loads track to database -->
       <el-upload
       class="upload-demo"
-      :action="`/api/track/${this.user}`"
+      :action="`${this.server}/api/track/${this.user}`"
       :on-error="handleSuccess"
       multiple
       accept="audio/*"
@@ -25,7 +25,7 @@
               <li style="margin-right: 30px;">{{ track.name }}</li>
               <li>
                 <audio controls style="width: 480px;">
-                  <source :src="`/api/files/music/${track.track}`" type="audio/mpeg" preload="metadata">
+                  <source :src="`${server}/api/files/music/${track.track}`" type="audio/mpeg" preload="metadata">
                   <a href="audio/music.mp3">Download the music</a>.
                 </audio>
               </li>
@@ -69,7 +69,7 @@ import axios from '../my-axios';
 export default {
     data() {
       return {
-       // server: 'https://malashchuk-project.herokuapp.com', 
+        server: 'https://malashchuk-project.herokuapp.com', 
         user: '5aaee2644a6bae284c5bf3eb', // here have to be user`s property
         tracks: [],
         errors: []
@@ -87,7 +87,7 @@ export default {
 
     async created() { // download all tracks by "user"
         try {
-          const response = await axios.get(`/track/${this.user}`);
+          const response = await axios.get(`/api/track/${this.user}`);
           this.tracks = response.data;
         } catch (e) {
           this.errors.push(e);
@@ -96,7 +96,7 @@ export default {
     methods: {
       async reloadMain() { // function which we can insert in all function for reload tracks again
         try {
-          const response = await axios.get(`/track/${this.user}`);
+          const response = await axios.get(`/api/track/${this.user}`);
           this.tracks = response.data;
         } catch (e) {
           this.errors.push(e);
@@ -113,8 +113,8 @@ export default {
 
       async deleteTrack(el) { // delete tracks
         try {
-          await axios.delete(`/track/${el._id}`) // delete one track from collection of tracks
-          await axios.delete(`/files/${el.track}`); // delete file from fs.files and fs.chunks
+          await axios.delete(`/api/track/${el._id}`) // delete one track from collection of tracks
+          await axios.delete(`/api/files/${el.track}`); // delete file from fs.files and fs.chunks
           this.reloadMain();
           let self = this;
           setTimeout(function() {

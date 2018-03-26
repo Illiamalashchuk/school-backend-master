@@ -4,12 +4,12 @@
       <div>Click on "Add avatar" to upload your profile picture</div>
     </div>
     <div v-else class="avatar" @click="openAvatar">
-      <img :src="`/api/files/${this.avatars[this.avatars.length-1].img}`" width="100%">
+      <img :src="`${server}/api/files/${this.avatars[this.avatars.length-1].img}`" width="100%">
     </div>
     
     <!-- upload avatar -->
     <el-upload class="upload-demo" 
-    :action="`/api/avatar/${this.user}`"
+    :action="`${this.server}/api/avatar/${this.user}`"
     :on-error="handleSuccess"
     accept="image/*">
       <el-button class="btn" type="success">Add avatar</el-button>
@@ -20,7 +20,7 @@
     <el-dialog class="dialog" :visible.sync="dialogAvatarVisible" width="70%">
       <el-carousel v-if="dialogAvatarVisible" :autoplay="false" height="550px" indicator-position="none" :initial-index="this.avatars.indexOf(this.avatars[this.avatars.length-1])">
           <el-carousel-item v-for="avatar in this.avatars" :key="avatar.id" >
-              <img :src="`/api/files/${avatar.img}`" height="500px">
+              <img :src="`${server}/api/files/${avatar.img}`" height="500px">
               <!-- <div>
                   <el-button style="margin-top: 10px" size="small" type="danger" @click="deleteAvatar(avatar)">Delete image</el-button>
               </div> -->
@@ -72,7 +72,7 @@
   export default {
     data() {
       return {
-       // server: 'https://malashchuk-project.herokuapp.com/',               
+        server: 'https://malashchuk-project.herokuapp.com',               
         user: '5aaee2644a6bae284c5bf3eb', // here have to be user`s property
         avatars: [], // array of avatars from "created"
         errors: [],
@@ -93,7 +93,7 @@
 
     async created() { // download all avatars
       try {
-        const response = await axios.get(`/avatar/${this.user}`);
+        const response = await axios.get(`/api/avatar/${this.user}`);
         this.avatars = response.data;
       } catch (e) {
         this.errors.push(e)
@@ -103,7 +103,7 @@
     methods: {
       async reloadMain() { // function which we can insert in all function for reload images again
         try {
-          const response = await axios.get(`/avatar/${this.user}`);
+          const response = await axios.get(`/api/avatar/${this.user}`);
           this.avatars = response.data;
         } catch (e) {
           this.errors.push(e)
@@ -121,8 +121,8 @@
       async deleteAvatar() { // delete the last avatar which is shown on the page
         this.dialogVisible = false;
         try {
-          await axios.delete(`/avatar/${this.avatars[this.avatars.length-1]._id}`); // delete avatar from colletion of avatars
-          await axios.delete(`/files/${this.avatars[this.avatars.length-1].img}`); // delete file from fs.files and fs.chunk
+          await axios.delete(`/api/avatar/${this.avatars[this.avatars.length-1]._id}`); // delete avatar from colletion of avatars
+          await axios.delete(`/api/files/${this.avatars[this.avatars.length-1].img}`); // delete file from fs.files and fs.chunk
           this.reloadMain();
           let self = this;
           setTimeout(function() {
