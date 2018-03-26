@@ -146,7 +146,7 @@
     export default {
         data() {
             return {
-                server: 'https://malashchuk-project.herokuapp.com', // here have to be link to server                
+                server: 'https://malashchuk-project.herokuapp.com/api', // here have to be link to server                
                 user: '5aaee2644a6bae284c5bf3eb', // here have to be user`s property
                 albums: [], // array with albums - albumUpload
                 errors: [],
