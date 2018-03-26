@@ -72,7 +72,7 @@
   export default {
     data() {
       return {
-        server: 'http://localhost:5000/api', // here have to be link to server                
+        server: 'https://malashchuk-project.herokuapp.com', // here have to be link to server                
         user: '5aaee2644a6bae284c5bf3eb', // here have to be user`s property
         avatars: [], // array of avatars from "created"
         errors: [],
