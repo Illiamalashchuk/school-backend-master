@@ -5,7 +5,7 @@
              <!-- upload new images -->
             <el-upload
             class="upload-demo"
-            :action="`/image/${this.user}`"
+            :action="`/api/image/${this.user}`"
             :on-error="handleSuccess"
             multiple 
             accept="image/*"
@@ -23,7 +23,7 @@
                 <ul v-else class="list">
                     <li v-for="(image, index) in this.images" :key="image.id">  
                         <div class="image" @click="openImage(image, index)">
-                            <img :src="`/files/${image.img}`" width="90%">
+                            <img :src="`/api/files/${image.img}`" width="90%">
                         </div> 
                     </li>
                 </ul>
@@ -31,7 +31,7 @@
                 <el-dialog class="dialog" :visible.sync="dialogVisible" width="70%">
                     <el-carousel v-if="dialogVisible" :autoplay="false" height="550px" indicator-position="none" :initial-index="index">
                         <el-carousel-item v-for="image in this.images" :key="image.id" >
-                            <img :src="`/files/${image.img}`" height="500px">
+                            <img :src="`/api/files/${image.img}`" height="500px">
                             <div>
                                 <el-button style="margin-top: 10px" size="small" type="danger" @click="deleteImage(image)">Delete image</el-button>
                             </div>
