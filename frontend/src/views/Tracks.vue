@@ -87,7 +87,7 @@ export default {
 
     async created() { // download all tracks by "user"
         try {
-          const response = await axios.get(`/api/track/${this.user}`);
+          const response = await axios.get(`/track/${this.user}`);
           this.tracks = response.data;
         } catch (e) {
           this.errors.push(e);
@@ -96,7 +96,7 @@ export default {
     methods: {
       async reloadMain() { // function which we can insert in all function for reload tracks again
         try {
-          const response = await axios.get(`/api/track/${this.user}`);
+          const response = await axios.get(`/track/${this.user}`);
           this.tracks = response.data;
         } catch (e) {
           this.errors.push(e);
@@ -113,8 +113,8 @@ export default {
 
       async deleteTrack(el) { // delete tracks
         try {
-          await axios.delete(`/api/track/${el._id}`) // delete one track from collection of tracks
-          await axios.delete(`/api/files/${el.track}`); // delete file from fs.files and fs.chunks
+          await axios.delete(`/track/${el._id}`) // delete one track from collection of tracks
+          await axios.delete(`/files/${el.track}`); // delete file from fs.files and fs.chunks
           this.reloadMain();
           let self = this;
           setTimeout(function() {

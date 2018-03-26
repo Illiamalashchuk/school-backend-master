@@ -110,7 +110,7 @@
 
         async created() { // download images by "user"
             try {
-                const response = await axios.get(`/api/image/${this.user}`);
+                const response = await axios.get(`/image/${this.user}`);
                 this.images = response.data;
             } catch (e) {
                 this.errors.push(e)
@@ -119,7 +119,7 @@
         methods: {
             async reloadMain() { // function which we can insert in all function for reload images again
                 try {
-                    const response = await axios.get(`/api/image/${this.user}`);
+                    const response = await axios.get(`/image/${this.user}`);
                     this.images = response.data;
                 } catch (e) {
                     this.errors.push(e)
@@ -141,8 +141,8 @@
             async deleteImage(e) { // delete one image
                 this.dialogVisible = false;
                 try {
-                    await axios.delete(`/api/image/${e._id}`);
-                    await axios.delete(`/api/files/${e.img}`);
+                    await axios.delete(`/image/${e._id}`);
+                    await axios.delete(`/files/${e.img}`);
                     this.reloadMain();
                     let self = this;
                     setTimeout(function() {

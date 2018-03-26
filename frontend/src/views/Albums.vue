@@ -151,7 +151,7 @@
                 albums: [], // array with albums - albumUpload
                 errors: [],
                 form: { // form with new album properties - albumUpload sends
-                    name: '' 
+                    name: ''
                 },
                 images: [], // array with images from some album
                 nonInsertedImages: [], // array with images which aren`t in particular album
@@ -174,7 +174,7 @@
 
         async created() { // get albums by user
             try {
-                const response = await axios.get(`/api/album/${this.user}`);
+                const response = await axios.get(`/album/${this.user}`);
                 this.albums = response.data;
             } catch (e) {
                 this.errors.push(e);
@@ -183,7 +183,7 @@
         methods: {
             async reload() { // get albums by user
                 try {
-                    const response = await axios.get(`/api/album/${this.user}`);
+                    const response = await axios.get(`/album/${this.user}`);
                     this.albums = response.data;
                 } catch (e) {
                     this.errors.push(e);
@@ -192,7 +192,7 @@
 
             async reloadImages() { // get images by album property
                 try {
-                    const response = await axios.get(`/api/image/album/${this.link}`);
+                    const response = await axios.get(`/image/album/${this.link}`);
                     this.images = response.data;
                 } catch (e) {
                     this.errors.push(e);
@@ -201,7 +201,7 @@
 
             async albumUpload() { // post new album
                 try {
-                    await axios.post(`/api/album/${this.user}`, this.form, this.dialogFormVisible = false);
+                    await axios.post(`/album/${this.user}`, this.form, this.dialogFormVisible = false);
                     this.reload();
                     let self = this;
                     setTimeout(function() {
@@ -217,7 +217,7 @@
                 this.images = []; // clear array with images for save here images from other album
                 this.link = el._id // here are saved id of album for getting particular images with this album id
                 try {
-                    const response = await axios.get(`/api/image/album/${el._id}`);
+                    const response = await axios.get(`/image/album/${el._id}`);
                     this.images = response.data;
                 } catch (e) {
                     this.errors.push(e)
@@ -229,7 +229,7 @@
                 this.nonInsertedImages = [];
                 this.reloadImages();
                 try {
-                    const response = await axios.get(`/api/image/non-album/${this.user}`);
+                    const response = await axios.get(`/image/non-album/${this.user}`);
                     this.nonInsertedImages = response.data; 
                 } catch (e) {
                     this.errors.push(e);
@@ -246,7 +246,7 @@
 
             async insertToAlbum(el) { // insert one image to album
                 try {
-                    await axios.put(`/api/image/${el._id}`, {album: this.link});
+                    await axios.put(`/image/${el._id}`, {album: this.link});
                     this.openNonInsertedImages();
                     this.reloadImages();
                 } catch (e) {
@@ -263,8 +263,8 @@
             async deleteAlbum() { // delete document album and album property from images
                 this.dialogConfirmVisible = false;
                 try {
-                    await axios.put(`/api/image/del-all-images/${this.link}`);
-                    await axios.delete(`/api/album/${this.link}`);
+                    await axios.put(`/image/del-all-images/${this.link}`);
+                    await axios.delete(`/album/${this.link}`);
                     this.openNonInsertedImages(); // call function which get all non-inserted images (all images from album appear there)
                     this.reloadImages(); // call function which show us images in album
                     this.reload(); // review albums menu (-1 album)
@@ -282,8 +282,8 @@
             async deleteImage(e) { // delete one image from image`s collection
                 this.dialogVisible = false; // close dialog
                 try {
-                    await axios.delete(`/api/image/${e._id}`);
-                    await axios.delete(`/api/files/${e.img}`);
+                    await axios.delete(`/image/${e._id}`);
+                    await axios.delete(`/files/${e.img}`);
                     this.openNonInsertedImages(); // call function which get all non-inserted images
                     this.reloadImages(); // call function which get all images from this album (-1 image)
                     let self = this;
@@ -298,7 +298,7 @@
             async deleteImageFromAlbum(e) { // delete one image from album
                 this.dialogVisible = false; // close dialog
                 try {
-                    await axios.put(`/api/image/del-one-images/${e._id}`, e.album);
+                    await axios.put(`/image/del-one-images/${e._id}`, e.album);
                     this.openNonInsertedImages(); // call function which get all non-inserted images (there should appear one new image)
                     this.reloadImages(); // call function which get all images from this album (should be one less image)
                 } catch (e) {

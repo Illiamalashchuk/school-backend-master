@@ -93,7 +93,7 @@
 
     async created() { // download all avatars
       try {
-        const response = await axios.get(`/api/avatar/${this.user}`);
+        const response = await axios.get(`/avatar/${this.user}`);
         this.avatars = response.data;
       } catch (e) {
         this.errors.push(e)
@@ -103,7 +103,7 @@
     methods: {
       async reloadMain() { // function which we can insert in all function for reload images again
         try {
-          const response = await axios.get(`/api/avatar/${this.user}`);
+          const response = await axios.get(`/avatar/${this.user}`);
           this.avatars = response.data;
         } catch (e) {
           this.errors.push(e)
@@ -121,8 +121,8 @@
       async deleteAvatar() { // delete the last avatar which is shown on the page
         this.dialogVisible = false;
         try {
-          await axios.delete(`/api/avatar/${this.avatars[this.avatars.length-1]._id}`); // delete avatar from colletion of avatars
-          await axios.delete(`/api/files/${this.avatars[this.avatars.length-1].img}`); // delete file from fs.files and fs.chunk
+          await axios.delete(`/avatar/${this.avatars[this.avatars.length-1]._id}`); // delete avatar from colletion of avatars
+          await axios.delete(`/files/${this.avatars[this.avatars.length-1].img}`); // delete file from fs.files and fs.chunk
           this.reloadMain();
           let self = this;
           setTimeout(function() {
