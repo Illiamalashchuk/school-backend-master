@@ -90,7 +90,7 @@
     
         data() {
             return {
-                server: 'https://malashchuk-project.herokuapp.com/api', // here have to be link to server                
+                server: 'https://malashchuk-project.herokuapp.com/api',                
                 user: '5aaee2644a6bae284c5bf3eb', // here have to be user`s property
                 images: [], // here are dowloaded images from "created"
                 errors: [],
