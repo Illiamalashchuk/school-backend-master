@@ -20,7 +20,7 @@
                 <ul v-else class="list">
                     <li v-for="(image, index) in this.images" :key="image.id">  
                         <div class="image" @click="openImage(image, index)">
-                            <img :src="`${server}/files/${image.img}`" width="auto" height="150">
+                            <img :src="`${server}/api/files/${image.img}`" width="auto" height="150">
                         </div> 
                     </li>
                 </ul>
@@ -38,7 +38,7 @@
                     <!-- upload new images if there still aren`t any-->
                     <el-upload
                     class="upload-demo"
-                    :action="`${this.server}/image/${this.user}`"
+                    :action="`${this.server}/api/image/${this.user}`"
                     :on-error="handleSuccess"
                     multiple
                     accept="image/*"
@@ -50,7 +50,7 @@
                 <ul v-else class="list non-inserted">
                     <li v-for="image in this.nonInsertedImages" :key="image.id">  
                         <div class="image" @click="insertToAlbum(image)">
-                            <img :src="`${server}/files/${image.img}`" width="auto" height="150">
+                            <img :src="`${server}/api/files/${image.img}`" width="auto" height="150">
                         </div> 
                     </li>
                 </ul>
@@ -72,7 +72,7 @@
         <el-dialog class="dialog" :visible.sync="dialogVisible" width="70%">
             <el-carousel v-if="dialogVisible" :autoplay="false" height="550px" indicator-position="none" :initial-index="index">
                 <el-carousel-item v-for="image in this.images" :key="image.id" >
-                    <img :src="`${server}/files/${image.img}`" height="500px">
+                    <img :src="`${server}/api/files/${image.img}`" height="500px">
                     <div style="display: flex; flex-wrap: wrap; margin-left: 385px;">
                         <el-button style="margin-top: 10px" size="small" type="danger" @click="deleteImage(image)">Delete image</el-button>
                         <el-button style="margin-top: 10px" size="small" type="danger" @click="deleteImageFromAlbum(image)">Delete from album</el-button>
@@ -146,7 +146,7 @@
     export default {
         data() {
             return {
-                server: 'https://malashchuk-project.herokuapp.com/api', // here have to be link to server                
+                server: 'https://malashchuk-project.herokuapp.com/', // here have to be link to server                
                 user: '5aaee2644a6bae284c5bf3eb', // here have to be user`s property
                 albums: [], // array with albums - albumUpload
                 errors: [],

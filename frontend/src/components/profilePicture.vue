@@ -4,12 +4,12 @@
       <div>Click on "Add avatar" to upload your profile picture</div>
     </div>
     <div v-else class="avatar" @click="openAvatar">
-      <img :src="`${server}/files/${this.avatars[this.avatars.length-1].img}`" width="100%">
+      <img :src="`${server}/api/files/${this.avatars[this.avatars.length-1].img}`" width="100%">
     </div>
     
     <!-- upload avatar -->
     <el-upload class="upload-demo" 
-    :action="`${this.server}/avatar/${this.user}`"
+    :action="`${this.server}/api/avatar/${this.user}`"
     :on-error="handleSuccess"
     accept="image/*">
       <el-button class="btn" type="success">Add avatar</el-button>
@@ -20,7 +20,7 @@
     <el-dialog class="dialog" :visible.sync="dialogAvatarVisible" width="70%">
       <el-carousel v-if="dialogAvatarVisible" :autoplay="false" height="550px" indicator-position="none" :initial-index="this.avatars.indexOf(this.avatars[this.avatars.length-1])">
           <el-carousel-item v-for="avatar in this.avatars" :key="avatar.id" >
-              <img :src="`${server}/files/${avatar.img}`" height="500px">
+              <img :src="`${server}/api/files/${avatar.img}`" height="500px">
               <!-- <div>
                   <el-button style="margin-top: 10px" size="small" type="danger" @click="deleteAvatar(avatar)">Delete image</el-button>
               </div> -->
@@ -72,7 +72,7 @@
   export default {
     data() {
       return {
-        server: 'https://malashchuk-project.herokuapp.com/api',               
+        server: 'https://malashchuk-project.herokuapp.com/',               
         user: '5aaee2644a6bae284c5bf3eb', // here have to be user`s property
         avatars: [], // array of avatars from "created"
         errors: [],
