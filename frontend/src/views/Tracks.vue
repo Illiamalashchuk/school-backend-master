@@ -5,7 +5,7 @@
       <!-- el-upload loads track to database -->
       <el-upload
       class="upload-demo"
-      :action="`${this.server}/api/track/${this.user}`"
+      :action="`${this.server}/track/${this.user}`"
       :on-error="handleSuccess"
       multiple
       accept="audio/*"
@@ -25,7 +25,7 @@
               <li style="margin-right: 30px;">{{ track.name }}</li>
               <li>
                 <audio controls style="width: 480px;">
-                  <source :src="`${server}/api/files/music/${track.track}`" type="audio/mpeg" preload="metadata">
+                  <source :src="`${server}/files/music/${track.track}`" type="audio/mpeg" preload="metadata">
                   <a href="audio/music.mp3">Download the music</a>.
                 </audio>
               </li>
@@ -69,7 +69,7 @@ import axios from '../my-axios';
 export default {
     data() {
       return {
-        server: 'https://malashchuk-project.herokuapp.com', 
+        server: 'https://malashchuk-project.herokuapp.com/api', 
         user: '5aaee2644a6bae284c5bf3eb', // here have to be user`s property
         tracks: [],
         errors: []

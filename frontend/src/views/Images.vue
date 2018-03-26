@@ -5,7 +5,7 @@
              <!-- upload new images -->
             <el-upload
             class="upload-demo"
-            :action="`${this.server}/api/image/${this.user}`"
+            :action="`${this.server}/image/${this.user}`"
             :on-error="handleSuccess"
             multiple 
             accept="image/*"
@@ -23,7 +23,7 @@
                 <ul v-else class="list">
                     <li v-for="(image, index) in this.images" :key="image.id">  
                         <div class="image" @click="openImage(image, index)">
-                            <img :src="`${server}/api/files/${image.img}`" width="90%">
+                            <img :src="`${server}/files/${image.img}`" width="90%">
                         </div> 
                     </li>
                 </ul>
@@ -31,7 +31,7 @@
                 <el-dialog class="dialog" :visible.sync="dialogVisible" width="70%">
                     <el-carousel v-if="dialogVisible" :autoplay="false" height="550px" indicator-position="none" :initial-index="index">
                         <el-carousel-item v-for="image in this.images" :key="image.id" >
-                            <img :src="`${server}/api/files/${image.img}`" height="500px">
+                            <img :src="`${server}/files/${image.img}`" height="500px">
                             <div>
                                 <el-button style="margin-top: 10px" size="small" type="danger" @click="deleteImage(image)">Delete image</el-button>
                             </div>
@@ -90,7 +90,7 @@
     
         data() {
             return {
-                server: 'https://malashchuk-project.herokuapp.com',                
+                server: 'https://malashchuk-project.herokuapp.com/api', // here have to be link to server                
                 user: '5aaee2644a6bae284c5bf3eb', // here have to be user`s property
                 images: [], // here are dowloaded images from "created"
                 errors: [],
@@ -141,7 +141,7 @@
             async deleteImage(e) { // delete one image
                 this.dialogVisible = false;
                 try {
-                    await axios.delete(`/image/${e._id}`);
+                    const response = await axios.delete(`/image/${e._id}`);
                     await axios.delete(`/files/${e.img}`);
                     this.reloadMain();
                     let self = this;
