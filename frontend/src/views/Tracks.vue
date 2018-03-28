@@ -21,18 +21,20 @@
         <!-- here are list of tracks (take from array "tracks") -->
         <ul v-else>
           <li v-for="track in this.tracks" :key="track.id">  
-            <ul class="track">
-              <li style="margin-right: 30px; width: 33,33%;">{{ track.name }}</li>
-              <li>
-                <audio controls style="width: 33,33%;">
+            <div class="track">
+              <div style="width: 300px">
+                  {{ track.name }}
+              </div>
+              <div style="width: 430px">
+                <audio controls style="width: 430px">
                   <source :src="`${server}/files/music/${track.track}`" type="audio/mpeg" preload="metadata">
                   <a href="audio/music.mp3">Download the music</a>.
                 </audio>
-              </li>
-              <li>
-                <el-button size="small" type="danger" style="width: 33,33%;" @click="deleteTrack(track)">Delete</el-button>
-              </li>
-            </ul> 
+              </div>
+              <div style="margin-left: 30px">
+                <el-button size="small" type="danger" @click="deleteTrack(track)">Delete</el-button>
+              </div>
+            </div> 
           </li>
         </ul>
         <!-- list of tracks end -->
@@ -54,8 +56,8 @@
     padding-bottom: 20px;
   }
   .track {
-    padding: 5px;
-    width: auto;
+    padding: 5px 20px;
+    width: inherit;
     border: 1px solid #d9d9d9;
     border-radius: 5px;
     display: flex;
@@ -69,7 +71,7 @@ import axios from '../my-axios';
 export default {
     data() {
       return {
-        server: 'https://malashchuk-project.herokuapp.com/api', 
+        server: 'https://malashchuk-project.herokuapp.com/api',
         user: '5aaee2644a6bae284c5bf3eb', // here have to be user`s property
         tracks: [],
         errors: []
