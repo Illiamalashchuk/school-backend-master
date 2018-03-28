@@ -114,7 +114,7 @@
         this.reloadMain();
         let self = this;
         setTimeout(function() {
-          self.successMessage('Image is updated successfully!');
+          self.successMessage('Image is successfully updated!');
         }, 3000);
       },
 
@@ -126,7 +126,7 @@
           this.reloadMain();
           let self = this;
           setTimeout(function() {
-            self.successMessage('Image is deleted successfully!');
+            self.successMessage('Image is successfully deleted!');
           }, 500);
         } catch (e) {
           this.errors.push(e)

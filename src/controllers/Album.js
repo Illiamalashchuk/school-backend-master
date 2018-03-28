@@ -20,6 +20,7 @@ export default class TestCtrl extends BaseCtrl {
     async createAlbum(ctx) {
         const items = new Album(ctx.request.body);
         items.user = ctx.params._id;
+        items.name = ctx.request.body.name || 'New album';
         await items.save();
         ctx.ok(items);
     }

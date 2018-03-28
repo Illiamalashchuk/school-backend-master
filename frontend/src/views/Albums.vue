@@ -84,9 +84,9 @@
 
         <!-- dialog-form of new album`s properties -->
         <el-dialog title="Please fill properties of new album" :visible.sync="dialogFormVisible"> 
-            <el-form :model="form">
+            <el-form :model="form" id="album-form">
                 <el-form-item label="Album`s name" prop="name">
-                    <el-input v-model="form.name"></el-input>
+                    <el-input v-model="form.name" placeholder="New album"></el-input>
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
@@ -151,7 +151,7 @@
                 albums: [], // array with albums - albumUpload
                 errors: [],
                 form: { // form with new album properties - albumUpload sends
-                    name: '' || 'New album' 
+                    name: ''
                 },
                 images: [], // array with images from some album
                 nonInsertedImages: [], // array with images which aren`t in particular album
@@ -203,6 +203,7 @@
                 try {
                     await axios.post(`/album/${this.user}`, this.form, this.dialogFormVisible = false);
                     this.reload();
+                    document.querySelector('#album-form').reset(); // clean album form
                     let self = this;
                     setTimeout(function() {
                         self.successMessage('Album is successfully created!');
