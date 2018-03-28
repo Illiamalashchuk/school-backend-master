@@ -102,7 +102,12 @@
         // async getUserId() { // download user._id and save it in "user"
         //   try {
         //     const response = await axios.get(`some link`);
-        //     this.user = response.data;
+        //     if(response.data.length !== 24) {
+        //         document.querySelector('#images-menu').style="display: none";
+        //     } else {
+        //         document.querySelector('#images-menu').style="display: block";
+        //         this.user = response.data;
+        //     }
         //   } catch (e) {
         //     this.errors.push(e)
         //   }

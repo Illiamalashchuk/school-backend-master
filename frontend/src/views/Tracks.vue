@@ -22,15 +22,15 @@
         <ul v-else>
           <li v-for="track in this.tracks" :key="track.id">  
             <ul class="track">
-              <li style="margin-right: 30px;">{{ track.name }}</li>
+              <li style="margin-right: 30px; width: 33,33%;">{{ track.name }}</li>
               <li>
-                <audio controls style="width: 480px;">
+                <audio controls style="width: 33,33%;">
                   <source :src="`${server}/files/music/${track.track}`" type="audio/mpeg" preload="metadata">
                   <a href="audio/music.mp3">Download the music</a>.
                 </audio>
               </li>
               <li>
-                <el-button size="small" type="danger" @click="deleteTrack(track)">Delete</el-button>
+                <el-button size="small" type="danger" style="width: 33,33%;" @click="deleteTrack(track)">Delete</el-button>
               </li>
             </ul> 
           </li>
